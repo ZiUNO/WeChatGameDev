@@ -1,0 +1,13 @@
+<!--index.wxml-->
+<view class='view'>
+  <map 
+    id="usermap" 
+    longitude="{{longitude}}" 
+    latitude="{{latitude}}" 
+    markers="{{markers}}"  
+    controls="{{controls}}" 
+    bindcontroltap="controltap" 
+    bindmarkertap="markertap"
+    show-location>
+  </map>
+</view>

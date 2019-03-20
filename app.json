@@ -1,6 +1,8 @@
 {
   "pages":[
+    "pages/lead/lead",
     "pages/index/index",
+    "pages/userpage/userpage",
     "pages/logs/logs"
   ],
   "permission": {
@@ -11,7 +13,7 @@
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Ingress",
+    "navigationBarTitleText": "BEAT IT",
     "navigationBarTextStyle":"black"
   },
   "networkTimeout":{

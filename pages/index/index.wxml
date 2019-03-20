@@ -4,10 +4,17 @@
     id="usermap" 
     longitude="{{longitude}}" 
     latitude="{{latitude}}" 
+    subkey="{{subkey}}"
     markers="{{markers}}"  
-    controls="{{controls}}" 
-    bindcontroltap="controltap" 
     bindmarkertap="markertap"
+    bindregionchange="hiddenCallout"
     show-location>
+    <cover-view class="buttons">
+      <cover-image id="userpage" src="/image/location_green.png" bindtap="toUserPage"/>
+      <cover-view class="empty"/>
+      <cover-image id="beat" src="/image/logo.png" bindtap="beat"/>
+      <cover-view class="empty"/>
+      <cover-image id="location" src="/image/location_green.png" bindtap="moveToLocation"/>
+    </cover-view>
   </map>
 </view>

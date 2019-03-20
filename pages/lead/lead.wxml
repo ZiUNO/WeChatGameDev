@@ -1,0 +1,22 @@
+<!--lead.wxml-->
+<view class="view">
+  <view class="buttons">
+  <view class="userinfo">
+    <image class="userinfo-avatar">
+      <open-data type="userAvatarUrl"/>
+    </image>
+    <text class="userinfo-nicknam">
+      <open-data type="userNickName"/>
+    </text>
+  </view>
+  <button
+    id="log"
+    wx:if="{{canIUse}}"
+    open-type="getUserInfo"
+    bindgetuserinfo="bindGetUserInfo"
+  >授权登陆
+  </button>
+  <view wx:else>请升级微信版本</view>
+  <button id="quit" bindtap="quit">返回首页</button>
+  </view>
+</view>

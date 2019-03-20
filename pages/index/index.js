@@ -5,6 +5,7 @@ Page({
   data: {
     longitude: 116.4965075,
     latitude: 40.006103,
+    subkey: '5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF',
     markers: [
       {
         id: 'smub', //software multi-use building
@@ -14,30 +15,17 @@ Page({
         width: 30,
         height: 30,
         callout: {
-          content: "综合楼",
+          content: 50,
           display: 'BYCLICK',
           textAlign: 'center',
           borderWidth: 150,
           borderRadius: 10
         }
       }
-    ],
-    controls:[
-      {
-        id: 'location',
-        iconPath: "/image/location_green.png",
-        position:{
-          left: app.globalData.scWidth - 100,
-          top: app.globalData.scHeight - 100,
-          width: 50,
-          height: 50
-        },
-        clickable: true
-      }
     ]
   },
   //事件处理函数
-  //页面渲染过程中，获取mapCtx
+  //页面加载中获取初始化坐标
   onLoad: function(){
     var that = this
     wx.getLocation({
@@ -54,15 +42,29 @@ Page({
       
     })
   },
+  //页面渲染过程中，获取mapCtx
   onReady: function(e){
     this.mapCtx = wx.createMapContext('usermap')
     this.mapCtx.moveToLocation()
   },
-  controltap: function(e){
-    switch(e.controlId){
-      case 'location':
-      console.log('move to present location');
+  //右侧按钮，视野返回到当前位置
+  moveToLocation: function(){
+      console.log('move to present location')
       this.mapCtx.moveToLocation()
-    }
+  },
+  //beat功能
+  beat: function(){
+    console.log('BEAT!')
+    //添加beat功能
+  },
+  //跳转到用户信息界面
+  toUserPage: function(){
+    console.log('move to user page')
+    wx.redirectTo({
+      url: '../userpage/userpage'
+    })
+  },
+  hiddenCallout: function(){
+    console.log('hidden all callout')
   }
 })

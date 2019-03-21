@@ -39,7 +39,6 @@ Page({
           longitude: longitude
         })
       },
-      
     })
   },
   //页面渲染过程中，获取mapCtx
@@ -56,15 +55,14 @@ Page({
   beat: function(){
     console.log('BEAT!')
     //添加beat功能
-  },
-  //跳转到用户信息界面
-  toUserPage: function(){
-    console.log('move to user page')
-    wx.redirectTo({
-      url: '../userpage/userpage'
-    })
-  },
+    console.log(app.globalData.userInfo)
+  },  
   hiddenCallout: function(){
     console.log('hidden all callout')
+  },
+  toUserPage: function(){
+    wx.navigateTo({
+      url: '/pages/userpage/userpage',
+    })
   }
 })

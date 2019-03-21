@@ -10,7 +10,9 @@
     bindregionchange="hiddenCallout"
     show-location>
     <cover-view class="buttons">
-      <cover-image id="userpage" src="/image/location_green.png" bindtap="toUserPage"/>
+      <cover-view id="userpage" bindtap="toUserPage">
+        <cover-image src="{{app.globalData.avatarUrl}}"/>
+      </cover-view>
       <cover-view class="empty"/>
       <cover-image id="beat" src="/image/logo.png" bindtap="beat"/>
       <cover-view class="empty"/>

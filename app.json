@@ -1,9 +1,10 @@
 {
   "pages":[
+
     "pages/lead/lead",
-    "pages/index/index",
-    "pages/userpage/userpage",
-    "pages/logs/logs"
+        "pages/index/index",
+    "pages/logs/logs",
+    "pages/userpage/userpage"
   ],
   "permission": {
     "scope.userLocation": {
@@ -12,9 +13,9 @@
   },
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#243142",
     "navigationBarTitleText": "BEAT IT",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"white"
   },
   "networkTimeout":{
     "request": 10000,

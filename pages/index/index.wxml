@@ -7,11 +7,10 @@
     subkey="{{subkey}}"
     markers="{{markers}}"  
     bindmarkertap="markertap"
-    bindregionchange="hiddenCallout"
     show-location>
     <cover-view class="buttons">
       <cover-view id="userpage" bindtap="toUserPage">
-        <cover-image src="{{app.globalData.avatarUrl}}"/>
+        <cover-image src="{{avatarUrl}}"/>
       </cover-view>
       <cover-view class="empty"/>
       <cover-image id="beat" src="/image/logo.png" bindtap="beat"/>

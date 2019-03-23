@@ -6,6 +6,7 @@ Page({
     longitude: 116.4965075,
     latitude: 40.006103,
     subkey: '5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF',
+    avatarUrl: null,
     markers: [
       {
         id: 'smub', //software multi-use building
@@ -40,6 +41,9 @@ Page({
         })
       },
     })
+    that.setData({
+      avatarUrl: app.globalData.userInfo.avatarUrl
+    })
   },
   //页面渲染过程中，获取mapCtx
   onReady: function(e){
@@ -55,11 +59,7 @@ Page({
   beat: function(){
     console.log('BEAT!')
     //添加beat功能
-    console.log(app.globalData.userInfo)
-  },  
-  hiddenCallout: function(){
-    console.log('hidden all callout')
-  },
+  }, 
   toUserPage: function(){
     wx.navigateTo({
       url: '/pages/userpage/userpage',

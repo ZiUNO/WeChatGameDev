@@ -1,4 +1,5 @@
 //lead.js
+const app = getApp()
 Page({
   data: {
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -13,6 +14,7 @@ Page({
           wx.getUserInfo({
             success(res) {
               console.log(res.userInfo)
+              app.globalData.userInfo = res.userInfo
             }
           })
         }

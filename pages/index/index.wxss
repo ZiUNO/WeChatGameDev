@@ -25,9 +25,10 @@ map{
 #userpage{
   overflow: hidden;
   display: block;
-  height: 18%;
-  width: 18%;
+  height: 16%;
+  width: 16%;
   border-radius: 50%; 
+  border: 8px solid rgba(255, 255, 255, 0.3);
 }
 
 #beat{

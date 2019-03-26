@@ -25,7 +25,7 @@ page{
   margin: 20rpx;  
   margin-top: 50rpx;  
   border-radius: 50%; 
-  box-shadow: 0px 0px 5px 5px rgb(0, 238, 255);  
+  box-shadow: 0px 0px 5px 5px rgb(15, 222, 236);  
 }  
 
 .begin{

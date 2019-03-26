@@ -16,12 +16,24 @@ Page({
         width: 30,
         height: 30,
         callout: {
-          content: 50,
-          display: 'BYCLICK',
-          textAlign: 'center',
-          borderWidth: 150,
-          borderRadius: 10
+          content: '我是这个气泡',
+          fontSize: 14,
+          color: '#ffffff',
+          bgColor: '#00ff7290',
+          padding: 8,
+          borderRadius: 15,
+          boxShadow: '4px 8px 16px 0 rgba(0)'
         }
+      }
+    ],
+    circles: [
+      {
+        id: 'test',
+        latitude: 39.08371,
+        longitude: 121.813359,
+        color: '#CCF2FF',
+        fillColor: '#00ff7230',
+        radius: 50
       }
     ]
   },

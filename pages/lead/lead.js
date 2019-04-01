@@ -22,7 +22,9 @@ Page({
     })
   },
   bindGetUserInfo(e) {
-    app.globalData.userInfo = e.detail.userInfo
+    if (app.globalData.userInfo == null){
+      app.globalData.userInfo = e.detail.userInfo
+    }
     wx.navigateTo({
       url: '/pages/index/index'
     })

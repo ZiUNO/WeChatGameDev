@@ -2,16 +2,16 @@
 <view class='view'>
   <map 
     id="usermap" 
-    longitude="{{longitude}}" 
-    latitude="{{latitude}}" 
-    subkey="{{subkey}}"
-    markers="{{markers}}"  
+    longitude="{{map.userInfo.longitude}}" 
+    latitude="{{map.userInfo.latitude}}" 
+    subkey="{{map.subkey}}"
+    markers="{{map.markers}}"  
     bindmarkertap="markertap"
-    circles="{{circles}}"
+    circles="{{map.circles}}"
     show-location>
     <cover-view class="buttons">
       <cover-view id="userpage" bindtap="toUserPage">
-        <cover-image src="{{avatarUrl}}"/>
+        <cover-image src="{{map.userInfo.avatarUrl}}"/>
       </cover-view>
       <cover-view class="empty"/>
       <cover-image id="beat" src="/image/logo.png" bindtap="beat"/>

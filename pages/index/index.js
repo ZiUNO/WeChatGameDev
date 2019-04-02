@@ -82,6 +82,7 @@ Page({
   },
   //向服务器发送指定信息，返回处理后数据
   getMapInfo: function(info, init=false){
+    //需具体填充向服务器请求更改数据-----------------------------------------------------需补充向服务器获取数据代码，结合wx.getStorageSync(key)读取缓存区中session_id
     var circles = [{
         "id": 0,
         "latitude": 39.08371,
@@ -95,16 +96,9 @@ Page({
       'iconPath': "/image/setpoint_green.png",
       'longitude': 121.813359,
       'latitude': 39.08371,
-      'width': 30,
-      'height': 30,
       'callout': {
         'content': '我是这个气泡',
-        'fontSize': 14,
-        'color': '#ffffff',
-        'bgColor': '#00ff7290',
-        'padding': 8,
-        'borderRadius': 15,
-        'boxShadow': '4px 8px 16px 0 rgba(0)'
+        'bgColor': '#00ff7290'
       }
     }]
     return {'circles': circles, 'markers': markers} 
@@ -113,17 +107,14 @@ Page({
     var that = this
     var circles = mapInfo['circles']
     var markers = mapInfo['markers']
-    var tmp_circle_info = {}
-    var tmp_circle_id = undefined
-    var tmp_marker_info = {}
-    var tmp_marker_id = undefined
+    var tmp_info = {}
+    var tmp_id = undefined
     for (let i = 0; i < circles.length; i ++){
       let circle = circles[i]
       let id = circle.id
-      tmp_circle_id = 'map.circles[' + id + ']'
-      console.log(tmp_circle_id)
+      tmp_id = 'map.circles[' + id + ']'
       if (this.data.map.circles[id] == undefined){
-        tmp_circle_info = {
+        tmp_info = {
             id: id,
             latitude: 0,
             longitude: 0,
@@ -132,22 +123,25 @@ Page({
             radius: 0
           }
       }
+      else{
+        tmp_info = this.data.map.circles[id]
+      }
       for (let j in circle) {
         if (j == undefined || j == 'id')
           continue
-        tmp_circle_info[j] = circle[j]
+        tmp_info[j] = circle[j]
       }
       that.setData({
-        [tmp_circle_id]: tmp_circle_info
+        [tmp_id]: tmp_info
       })
     }
     // console.log(this.data.map.circles)
     for (let i = 0; i < markers.length; i ++){
       let marker = markers[i]
       let id = marker.id
-      tmp_marker_id = 'map.markers[' + id + ']'
+      tmp_id = 'map.markers[' + id + ']'
       if (this.data.map.markers[id] == undefined){
-        tmp_marker_info = {
+        tmp_info = {
           id: id,
           iconPath: 0,
           longitude: 0,
@@ -161,19 +155,30 @@ Page({
             bgColor: 0,
             padding: 8,
             borderRadius: 15,
-            boxShadow: 0
           }
         }
+      }
+      else{
+        tmp_info = this.data.map.markers[id]
       }
       for (let j in marker) {
         if (j == undefined || j == 'id')
           continue
-        tmp_marker_info[j] = marker[j]
+        if (j == 'callout'){
+          for (let k in marker[j]){
+            if (k ==  undefined)
+              continue
+            tmp_info['callout'][k] = marker[j][k]
+          }
+        }
+        else {
+          tmp_info[j] = marker[j]
+        }
       }
       that.setData({
-        [tmp_marker_id]: tmp_marker_info
+        [tmp_id]: tmp_info
       })
     }
-    console.log(this.data.map.circles, this.data.map.markers)
+    // console.log(this.data.map.circles, this.data.map.markers)
   }
 })

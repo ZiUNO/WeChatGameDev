@@ -1,2 +1,10 @@
 <!--pages/choose/choose.wxml-->
-<text>pages/choose/choose.wxml</text>
+<view class="container">
+  <text>Choose your camp</text>
+  <view class="choice">
+    <image src="{{images.blue_ori}}" bindtap="chooseBlue"/>
+    <view class="empty"/>
+    <image src="{{images.green_ori}}" bindtap="chooseGreen"/>
+  </view>
+  <button bindtap="submit">确定</button>
+</view>

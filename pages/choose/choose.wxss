@@ -1,1 +1,26 @@
 /* pages/choose/choose.wxss */
+page{
+  height: 100%;
+}
+
+.container{
+  height: 100%;
+  width: 100%;
+}
+
+image{
+  width: 50%;
+  height: 50%;
+}
+
+.choice{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.empty{
+  height: 5%;
+}

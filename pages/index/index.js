@@ -50,7 +50,6 @@ Page({
       'latitude': this.data.map.userInfo.latitude
     }, true)
     this.printMap(mapInfo)
-    console.log(this.data.map.circles)
   },
   //右侧按钮，视野返回到当前位置并更改经纬度数据值
   moveToLocation: function(){
@@ -116,6 +115,8 @@ Page({
     var markers = mapInfo['markers']
     var tmp_circle_info = {}
     var tmp_circle_id = undefined
+    var tmp_marker_info = {}
+    var tmp_marker_id = undefined
     for (let i = 0; i < circles.length; i ++){
       let circle = circles[i]
       let id = circle.id
@@ -141,5 +142,38 @@ Page({
       })
     }
     // console.log(this.data.map.circles)
+    for (let i = 0; i < markers.length; i ++){
+      let marker = markers[i]
+      let id = marker.id
+      tmp_marker_id = 'map.markers[' + id + ']'
+      if (this.data.map.markers[id] == undefined){
+        tmp_marker_info = {
+          id: id,
+          iconPath: 0,
+          longitude: 0,
+          latitude: 0,
+          width: 30,
+          height: 30,
+          callout: {
+            content: 0,
+            fontSize: 14,
+            color: '#ffffff',
+            bgColor: 0,
+            padding: 8,
+            borderRadius: 15,
+            boxShadow: 0
+          }
+        }
+      }
+      for (let j in marker) {
+        if (j == undefined || j == 'id')
+          continue
+        tmp_marker_info[j] = marker[j]
+      }
+      that.setData({
+        [tmp_marker_id]: tmp_marker_info
+      })
+    }
+    console.log(this.data.map.circles, this.data.map.markers)
   }
 })

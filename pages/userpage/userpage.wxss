@@ -21,6 +21,22 @@ image{
 }
 
 button{
-  background-color: rgb(70, 126, 254);
-  color: white;
+  border: 3rpx solid rgb(0, 255, 255);
+  background-color: #243142;
+  color: rgb(0, 255, 255);
+}
+.about{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+}
+.empty{
+  height: 25rpx;
+}
+.button-hover{
+  background-color: rgb(0, 255, 255);
+  color: #243142;
 }

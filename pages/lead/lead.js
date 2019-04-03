@@ -78,11 +78,13 @@ Page({
     }
     //未选择状态进入选择界面
     if (wx.getStorageSync('userChoice') == 'white'){
+      wx.setStorageSync('firstTime', true)
       wx.redirectTo({
         url: '../choose/choose',
       })
     } 
     else{
+      wx.setStorageSync('firstTime', false)
       wx.navigateTo({
         url: '../index/index'
       })

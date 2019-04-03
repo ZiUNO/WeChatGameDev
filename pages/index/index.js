@@ -15,12 +15,26 @@ Page({
       subkey: '5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF',
       markers: [],
       circles: []
-    }
+    },
+    //用户头像边框颜色
+    userBorder: "rgba(255, 255, 255, 0.3)",
   },
   //事件处理函数
   //页面加载中获取初始化坐标
   onLoad: function(){
     var that = this
+    //设置头像框边缘颜色
+    var userChoice = wx.getStorageSync('userChoice')
+    if (userChoice == 'green'){
+      that.setData({
+        userBorder: "rgba(0, 255, 200, 0.3)"
+      })
+    }
+    else if (userChoice == 'blue'){
+      that.setData({
+        userBorder: "rgba(0, 200, 255, 0.3)"
+      })
+    }
     //获取用户位置
     wx.getLocation({
       type: "gcj02",
@@ -38,13 +52,11 @@ Page({
     that.setData({
       'map.userInfo.avatarUrl': app.globalData.userInfo.avatarUrl
     })
-
   },
-  //页面渲染过程中，获取mapCtx
+  //页面渲染过程中，获取mapCtx，初始设置
   onReady: function(e){
     this.mapCtx = wx.createMapContext('usermap')
     this.moveToLocation()
-    //设置map数据
     var mapInfo = this.getMapInfo({
       'longitude': this.data.map.userInfo.longitude,
       'latitude': this.data.map.userInfo.latitude
@@ -65,7 +77,7 @@ Page({
       }
     })
   },
-  //beat功能
+  //中间按键beat功能
   beat: function(){
     console.log('BEAT!')
     this.moveToLocation()
@@ -77,7 +89,7 @@ Page({
   //跳转到用户信息界面
   toUserPage: function(){
     wx.navigateTo({
-      url: '/pages/userpage/userpage',
+      url: '../userpage/userpage',
     })
   },
   //向服务器发送指定信息，返回处理后数据

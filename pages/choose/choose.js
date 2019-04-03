@@ -1,47 +1,89 @@
 // pages/choose/choose.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    images:{
-      blue_ori: '/image/circle_blue_ori.png',
-      green_ori: '/image/circle_green_ori.png'
+    bgColor: 'rgb(36, 49, 66)',
+    button: {
+      choices: {
+        size: 'default',
+        blue: {
+          title: '幻想者',
+          context: '鸟儿会从天空跌落\n四月有时亦会飘雪\n',
+          bgColor: 'rgb(0, 200, 255)',
+          style: {
+            bgColor: 'rgb(36, 49, 66)',
+            color: 'rgb(0, 200, 255)'
+          }
+        },
+        green: {
+          title: '夜行者',
+          context: '与其要问是否正确\n思考错误更加真实\n',
+          bgColor: 'rgb(0, 255, 200)',
+          style:{
+            bgColor: 'rgb(36, 49, 66)',
+            color: 'rgb(0, 255, 200)'
+          }
+        }
+      },
+      submit: {
+        context: 'LOG IN',
+        loading: false,
+        disable: true,
+        color: 'rgba(0, 255, 255, 0.2)',
+        borderColor: 'rgba(0, 255, 255, 0.3)'
+      },
     },
-    choice: 0
+    choice: undefined
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     //需更改该处-------------------------------------------------------------------------------更改为选择阵营
-    // wx.redirectTo({
-    //   url: '/pages/index/index',
-    // })
   },
-  chooseBlue: function(){
+  choose: function(e){
     var that = this
-    that.setData({
-      choice: 1,
-      images: {
-        green_ori: '/image/circle_green_ori.png',
-        blue_ori: '/image/circle_blue.png',
+    var id = e.target.id
+    if (this.data.choice == undefined || this.data.choice != id){
+      if (id == 'blue'){
+        that.setData({
+          choice: 'blue',
+          'button.choices.blue.style.bgColor': this.data.button.choices.blue.bgColor,
+          'button.choices.blue.style.color': this.data.bgColor,
+          'button.choices.green.style.bgColor': this.data.bgColor,
+          'button.choices.green.style.color': this.data.button.choices.green.bgColor
+        })
       }
-    })
-  },
-  chooseGreen: function () {
-    var that = this
-    that.setData({
-      choice: 2,
-      images: {
-        green_ori: '/image/circle_green.png',
-        blue_ori: '/image/circle_blue_ori.png',
+      else{
+        that.setData({
+          choice: 'green',
+          'button.choices.blue.style.bgColor': this.data.bgColor,
+          'button.choices.blue.style.color': this.data.button.choices.blue.bgColor,
+          'button.choices.green.style.bgColor': this.data.button.choices.green.bgColor,
+          'button.choices.green.style.color': this.data.bgColor,
+        })
       }
-    })
+      that.setData({
+        'button.submit.color': 'rgb(0, 255, 255)',
+        'button.submit.borderColor': 'rgb(0, 255, 255)',
+        'button.submit.disable': false
+      })
+    }
+    else{
+      that.setData({
+        choice: undefined,
+        'button.choices.blue.style.bgColor': this.data.bgColor,
+        'button.choices.blue.style.color': this.data.button.choices.blue.bgColor,
+        'button.choices.green.style.bgColor': this.data.bgColor,
+        'button.choices.green.style.color': this.data.button.choices.green.bgColor,
+        'button.submit.color': 'rgba(0, 255, 255, 0.3)',
+        'button.submit.borderColor': 'rgba(0, 255, 255, 0.3)',
+        'button.submit.disable': true
+      })
+    }
   },
   submit: function(){
+    var that = this
+    that.setData({
+      'button.submit.context': 'LOGGING IN',
+      'button.submit.loading': true
+    })
     wx.setStorageSync('userChoice', this.data.choice)
     wx.redirectTo({
       url: '/pages/index/index',

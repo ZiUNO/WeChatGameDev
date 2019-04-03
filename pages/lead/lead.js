@@ -4,9 +4,10 @@ Page({
   data: {
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     plain: true,
+    userBoxShadow: "rgba(255, 255, 255, 0.7)",
   },
   onLoad() {
-    wx.setStorageSync('userChoice', 0)
+    wx.setStorageSync('userChoice', 'white')
     //查看是否登陆
     if (!wx.getStorageSync('session_id')){
       wx.login({
@@ -18,7 +19,7 @@ Page({
                 code: res.code
               },
               success(res) {
-                //将session_id保存在缓存中，具体名称需修改,同时需要存储用户的阵营的选择-------------------------------------------------------------需修改具体名称
+                //将session_id保存在缓存中，具体名称需修改,同时需要存储用户的阵营的选择，userChoice的取值为'green'或'blue'-------------------------------------------------------------需修改具体名称
                 // wx.setStorageSync('sessionId', res.data.sessionId)
                 // wx.setStorageSync('userChoice', res.data.userChoice)
               }
@@ -30,7 +31,21 @@ Page({
         }
       })
     }
-    // wx.setStorageSync('userChoice', 1) //-----------------------------------------------------------------------------修改上面success函数后删掉该强制赋值
+    // wx.setStorageSync('userChoice', 'blue') //-----------------------------------------------------------------------------修改上面success函数后删掉该强制赋值
+    // wx.setStorageSync('userChoice', 'green')
+    //设置头像边框
+    var that = this
+    var choice = wx.getStorageSync('userChoice') 
+    if (choice == 'blue'){
+      that.setData({
+        userBoxShadow: "rgba(0, 200, 255, 0.7)"
+      })
+    }
+    else if(choice == 'green'){
+      that.setData({
+        userBoxShadow: "rgba(0, 255, 200, 0.7)"
+      })
+    }
     //查看是否授权
     if (app.globalData.userInfo != null)
       return
@@ -48,17 +63,25 @@ Page({
     })
   },
   bindGetUserInfo(e) {
+    var loadTitle = 'LOGGING IN'
+    if (wx.getStorageSync('userChoice') == 'white')
+      loadTitle = 'TO CHOOSE CAMP'
+    wx.showLoading({
+      title: loadTitle,
+    })
+    //保存用户详细数据
     if (app.globalData.userInfo == null){
       app.globalData.userInfo = e.detail.userInfo
     }
-    if (wx.getStorageSync('userChoice') == 0){
+    //未选择状态进入选择界面
+    if (wx.getStorageSync('userChoice') == 'white'){
       wx.redirectTo({
-        url: '/pages/choose/choose',
+        url: '../choose/choose',
       })
-    }
+    } 
     else{
       wx.navigateTo({
-        url: '/pages/index/index'
+        url: '../index/index'
       })
     }
   }

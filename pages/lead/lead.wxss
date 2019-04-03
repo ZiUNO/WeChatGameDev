@@ -34,6 +34,6 @@ page{
   align-items: center;  
 }
 image{
-  width: 100px;
-  height: 100px;
+  width: 260rpx;
+  height: 260rpx;
 }

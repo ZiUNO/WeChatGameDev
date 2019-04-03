@@ -86,7 +86,7 @@ Page({
     })
     wx.setStorageSync('userChoice', this.data.choice)
     wx.redirectTo({
-      url: '/pages/index/index',
+      url: '../index/index',
     })
   }
 })

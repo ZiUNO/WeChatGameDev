@@ -5,6 +5,7 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     plain: true,
     userBoxShadow: "rgba(255, 255, 255, 0.7)",
+    begin_image: '../../image/begin_white.svg'
   },
   onLoad() {
     wx.setStorageSync('userChoice', 'white')
@@ -38,12 +39,14 @@ Page({
     var choice = wx.getStorageSync('userChoice') 
     if (choice == 'blue'){
       that.setData({
-        userBoxShadow: "rgba(0, 200, 255, 0.7)"
+        userBoxShadow: "rgba(0, 200, 255, 0.7)",
+        begin_image: '../../image/begin_blue.svg',
       })
     }
     else if(choice == 'green'){
       that.setData({
-        userBoxShadow: "rgba(0, 255, 200, 0.7)"
+        userBoxShadow: "rgba(0, 255, 200, 0.7)",
+        begin_image: '../../image/begin_green.svg'
       })
     }
     //查看是否授权

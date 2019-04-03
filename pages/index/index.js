@@ -17,7 +17,9 @@ Page({
       circles: []
     },
     //用户头像边框颜色
-    userBorder: "rgba(255, 255, 255, 0.3)",
+    userBorder: "rgba(255, 255, 255, 0.8)",
+    logo: undefined,
+    location: undefined
   },
   //事件处理函数
   //页面加载中获取初始化坐标
@@ -27,12 +29,16 @@ Page({
     var userChoice = wx.getStorageSync('userChoice')
     if (userChoice == 'green'){
       that.setData({
-        userBorder: "rgba(0, 255, 200, 0.3)"
+        userBorder: "rgba(0, 255, 200, 0.8)",
+        logo: '../../image/logo_green.png',
+        location: '../../image/location_green.png',
       })
     }
     else if (userChoice == 'blue'){
       that.setData({
-        userBorder: "rgba(0, 200, 255, 0.3)"
+        userBorder: "rgba(0, 200, 255, 0.8)",
+        logo: '../../image/logo_blue.png',
+        location: '../../image/location_blue.png'
       })
     }
     //获取用户位置
@@ -105,7 +111,7 @@ Page({
     }]
     var markers = [{
       'id': 0,
-      'iconPath': "/image/setpoint_green.png",
+      'iconPath': "../../image/setpoint_green.png",
       'longitude': 121.813359,
       'latitude': 39.08371,
       'callout': {

@@ -14,7 +14,7 @@
       bindgetuserinfo="bindGetUserInfo"
       plain="{{plain}}"
     >
-      <image src="/image/begin.png"/>
+      <image src="{{begin_image}}"/>
     </button>
     <view wx:else>请升级微信版本</view>
   </view>

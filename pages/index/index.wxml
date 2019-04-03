@@ -14,9 +14,9 @@
         <cover-image src="{{map.userInfo.avatarUrl}}"/>
       </cover-view>
       <cover-view class="empty"/>
-      <cover-image id="beat" src="/image/logo.png" bindtap="beat"/>
+      <cover-image id="beat" src="{{logo}}" bindtap="beat"/>
       <cover-view class="empty"/>
-      <cover-image id="location" src="/image/location_green.png" bindtap="moveToLocation"/>
+      <cover-image id="location" src="{{location}}" bindtap="moveToLocation"/>
     </cover-view>
   </map>
 </view>

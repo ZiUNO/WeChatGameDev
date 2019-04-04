@@ -12,7 +12,7 @@ Page({
       content: '您确定注销当前用户信息？\r\n若注销您在一个星期之内将无法再次注销',
       success(res){
         make_sure = res.confirm
-        if (make_sure){
+        if (res.confirm == true && make_sure){
           wx.showLoading({
             title: '注销中',
           })
@@ -32,7 +32,7 @@ Page({
                   title: '注销失败',
                   content: '注销周期未满一个星期\r\n无法注销',
                   showCancel: false,
-                  success(res) {
+                  complete(){
                     return
                   }
                 })
@@ -55,7 +55,6 @@ Page({
         }
       }
     })
-    
   },
   //显示开发者信息
   getApeInfo: function(){

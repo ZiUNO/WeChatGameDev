@@ -77,6 +77,7 @@ Page({
       app.globalData.userInfo = e.detail.userInfo
     }
     //未选择状态进入选择界面
+    wx.hideLoading()
     if (wx.getStorageSync('userChoice') == 'white'){
       wx.setStorageSync('firstTime', true)
       wx.redirectTo({

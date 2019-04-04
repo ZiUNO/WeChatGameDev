@@ -68,6 +68,16 @@ Page({
       'latitude': this.data.map.userInfo.latitude
     }, true)
     this.printMap(mapInfo)
+    if (wx.getStorageSync('firstTime')){
+      wx.showModal({
+        title: '食用说明',
+        content: '<view>内容</view>',
+        showCancel: false,
+        complete(){
+          return
+        }
+      })
+    }
   },
   //右侧按钮，视野返回到当前位置并更改经纬度数据值
   moveToLocation: function(){

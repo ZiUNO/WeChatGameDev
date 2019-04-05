@@ -35,7 +35,6 @@ Page({
     choice: undefined
   },
   onLoad: function (options) {
-    //需更改该处-------------------------------------------------------------------------------更改为选择阵营
   },
   choose: function(e){
     var that = this
@@ -84,6 +83,16 @@ Page({
       'button.submit.context': 'LOGGING IN',
       'button.submit.loading': true
     })
+    wx.request({
+      url: 'http://localhost:8080/choose',
+      data: {
+        sessionId: wx.getStorageSync('sessionId'),
+        userChoice: this.data.choice
+      },
+      success(res) {
+        console.log("-----阵营选择成功-------");
+      }
+    }) 
     wx.setStorageSync('userChoice', this.data.choice)
     wx.redirectTo({
       url: '../index/index',

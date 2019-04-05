@@ -15,14 +15,13 @@ Page({
         success(res) {
           if (res.code) {
             wx.request({
-              url: 'http://服务器网址.com',//-----------------------------------------------------------------------------此处需要修改为具体的login专用的网址
+              url: 'http://localhost:8080/login',
               data: {
                 code: res.code
               },
               success(res) {
-                //将session_id保存在缓存中，具体名称需修改,同时需要存储用户的阵营的选择，userChoice的取值为'green'或'blue'-------------------------------------------------------------需修改具体名称
-                // wx.setStorageSync('sessionId', res.data.sessionId)
-                // wx.setStorageSync('userChoice', res.data.userChoice)
+                wx.setStorageSync('sessionId', res.data.sessionId)
+                wx.setStorageSync('userChoice', res.data.userChoice)
               }
             })
           }

@@ -19,7 +19,9 @@ Page({
     //用户头像边框颜色
     userBorder: "rgba(255, 255, 255, 0.8)",
     logo: undefined,
-    location: undefined
+    location: undefined,
+    animation: null,
+    animationColor: null,
   },
   //事件处理函数
   //页面加载中获取初始化坐标
@@ -32,13 +34,15 @@ Page({
         userBorder: "rgba(0, 255, 200, 0.8)",
         logo: '../../image/logo_green.png',
         location: '../../image/location_green.png',
+        animationColor: 'rgb(0, 255, 200)'
       })
     }
     else if (userChoice == 'blue'){
       that.setData({
         userBorder: "rgba(0, 200, 255, 0.8)",
         logo: '../../image/logo_blue.png',
-        location: '../../image/location_blue.png'
+        location: '../../image/location_blue.png',
+        animationColor: 'rgb(0, 200, 255)'
       })
     }
     //获取用户位置
@@ -68,16 +72,6 @@ Page({
       'latitude': this.data.map.userInfo.latitude
     }, true)
     this.printMap(mapInfo)
-    if (wx.getStorageSync('firstTime')){
-      wx.showModal({
-        title: '食用说明',
-        content: '<view>内容</view>',
-        showCancel: false,
-        complete(){
-          return
-        }
-      })
-    }
   },
   //右侧按钮，视野返回到当前位置并更改经纬度数据值
   moveToLocation: function(){
@@ -110,25 +104,40 @@ Page({
   },
   //向服务器发送指定信息，返回处理后数据
   getMapInfo: function(info, init=false){
-    //需具体填充向服务器请求更改数据-----------------------------------------------------需补充向服务器获取数据代码，结合wx.getStorageSync(key)读取缓存区中session_id
-    var circles = [{
-        "id": 0,
-        "latitude": 39.08371,
-        "longitude": 121.813359,
-        "color": '#CCF2FF',
-        "fillColor": '#00ff7230',
-        "radius": 50
-    }]
-    var markers = [{
-      'id': 0,
-      'iconPath': "../../image/setpoint_green.png",
-      'longitude': 121.813359,
-      'latitude': 39.08371,
-      'callout': {
-        'content': '我是这个气泡',
-        'bgColor': '#00ff7290'
+    // var circles = [{
+    //     "id": 0,
+    //     "latitude": 39.08371,
+    //     "longitude": 121.813359,
+    //     "color": '#CCF2FF',
+    //     "fillColor": '#00ff7230',
+    //     "radius": 50
+    // }]
+    // var markers = [{
+    //   'id': 0,
+    //   'iconPath': "../../image/setpoint_green.png",
+    //   'longitude': 121.813359,
+    //   'latitude': 39.08371,
+    //   'callout': {
+    //     'content': '我是这个气泡',
+    //     'bgColor': '#00ff7290'
+    //   }
+    // }]
+    var circles = [];
+    var markers = [];
+    wx.request({
+      url: 'http://localhost:8080/map',
+      data: {
+        init: init,
+        sessionId: wx.getStorageSync('sessionId'),
+        latitude: info.latitude,
+        longitude: info.longitude
+
+      },
+      success(res) {
+        circles = res.data.circles;
+        markers = res.data.markers;
       }
-    }]
+    }) 
     return {'circles': circles, 'markers': markers} 
   },
   printMap: function(mapInfo){

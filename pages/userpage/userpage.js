@@ -16,8 +16,12 @@ Page({
           wx.showLoading({
             title: '注销中',
           })
-          wx.request({//------------------------------------------------------更改request内容向服务器请求注销用户信息
-            url: 'https://服务器网址.com/destroy?xxxx',//-----------------------域名自定义
+          wx.request({
+            url: 'http://localhost:8080/logout',
+            data: {
+              sessionId: wx.getStorageSync('sessionId'),
+              destroy: 'destroy'
+            },
             success(res) {
               if (res.data.status == 'SUCCESS') {
                 wx.showToast({
@@ -60,7 +64,7 @@ Page({
   getApeInfo: function(){
     wx.showModal({
       title: '关于我们',
-      content: '团队名称：\r\n豆浆油条\r\n团队成员：\r\nZiUNO+月老+小明同学+白\r\n联系邮箱：\r\nUKG@126.com',
+      content: '团队名称：\r\n豆浆油条\r\n团队成员：\r\nZiUNO+Charon+小明同学+白\r\n联系邮箱：\r\nUKG@126.com',
       showCancel: false
     })
   }

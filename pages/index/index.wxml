@@ -9,7 +9,7 @@
     bindmarkertap="markertap"
     circles="{{map.circles}}"
     show-location>
-    <cover-view id="modal">tankuang</cover-view>
+    <cover-view class="animation" animation="{{animation}}" style="background-color: {{animationColor}}" bindtap="showTeachAnimation">tankuang</cover-view>
     <cover-view class="buttons">
       <cover-view id="userpage" bindtap="toUserPage" style='border: 5px solid {{userBorder}}'>
         <cover-image src="{{map.userInfo.avatarUrl}}"/>

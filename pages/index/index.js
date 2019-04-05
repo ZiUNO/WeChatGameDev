@@ -217,5 +217,8 @@ Page({
       })
     }
     // console.log(this.data.map.circles, this.data.map.markers)
+  },
+  showTeachAnimation(){
+    console.log('showTeachAnimation')
   }
 })

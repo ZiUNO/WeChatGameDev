@@ -1,0 +1,9 @@
+<!--userpage.wxml-->
+<view class="container">
+  <view id="userInfo">
+    <image src="/image/logo.png"/>
+  </view>
+  <view class="about">
+    <button>关于我们</button>
+  </view>
+</view>

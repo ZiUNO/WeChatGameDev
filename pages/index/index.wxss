@@ -1,0 +1,48 @@
+/**index.wxss**/
+page{
+  height: 100%;
+}
+
+.view{
+  height: 100%;
+  width: 100%;
+}
+
+map{
+  height: 100%;
+  width: 100%;
+}
+
+.buttons{
+  position: relative;
+  top: 76%;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#userpage{
+  overflow: hidden;
+  display: block;
+  height: 16%;
+  width: 16%;
+  border-radius: 50%; 
+  border: 8px solid rgba(255, 255, 255, 0.3);
+}
+
+#beat{
+  height: 35%;
+  width: 35%;
+}
+
+#location{
+  height: 20%;
+  width: 20%;
+  left: 10%;
+}
+
+.empty{
+  height: 5%;
+  width: 5%;
+}

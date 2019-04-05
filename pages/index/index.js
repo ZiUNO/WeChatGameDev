@@ -15,12 +15,45 @@ Page({
       subkey: '5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF',
       markers: [],
       circles: []
+    },
+    //用户头像边框颜色
+    userBorder: "rgba(255, 255, 255, 0.8)",
+    logo: undefined,
+    location: undefined,
+    introduce: {
+      hidden: false
     }
   },
   //事件处理函数
   //页面加载中获取初始化坐标
   onLoad: function(){
+
+    wx.request({
+      url: 'http://localhost:8080/map',
+      data:{
+        maptype:'init'
+      },
+      success(res){
+        //===================================此处需要根据API初始化地图==！！！！！！！！！！！！！！！！！============
+      }
+    })
     var that = this
+    //设置头像框边缘颜色
+    var userChoice = wx.getStorageSync('userChoice')
+    if (userChoice == 'green'){
+      that.setData({
+        userBorder: "rgba(0, 255, 200, 0.8)",
+        logo: '../../image/logo_green.png',
+        location: '../../image/location_green.png',
+      })
+    }
+    else if (userChoice == 'blue'){
+      that.setData({
+        userBorder: "rgba(0, 200, 255, 0.8)",
+        logo: '../../image/logo_blue.png',
+        location: '../../image/location_blue.png'
+      })
+    }
     //获取用户位置
     wx.getLocation({
       type: "gcj02",
@@ -38,18 +71,26 @@ Page({
     that.setData({
       'map.userInfo.avatarUrl': app.globalData.userInfo.avatarUrl
     })
-
   },
-  //页面渲染过程中，获取mapCtx
+  //页面渲染过程中，获取mapCtx，初始设置
   onReady: function(e){
     this.mapCtx = wx.createMapContext('usermap')
     this.moveToLocation()
-    //设置map数据
     var mapInfo = this.getMapInfo({
       'longitude': this.data.map.userInfo.longitude,
       'latitude': this.data.map.userInfo.latitude
     }, true)
     this.printMap(mapInfo)
+    // if (wx.getStorageSync('firstTime')){
+    //   wx.showModal({
+    //     title: '食用说明',
+    //     content: '<view>内容</view>',
+    //     showCancel: false,
+    //     complete(){
+    //       return
+    //     }
+    //   })
+    // }
   },
   //右侧按钮，视野返回到当前位置并更改经纬度数据值
   moveToLocation: function(){
@@ -65,7 +106,7 @@ Page({
       }
     })
   },
-  //beat功能
+  //中间按键beat功能
   beat: function(){
     console.log('BEAT!')
     this.moveToLocation()
@@ -77,30 +118,47 @@ Page({
   //跳转到用户信息界面
   toUserPage: function(){
     wx.navigateTo({
-      url: '/pages/userpage/userpage',
+      url: '../userpage/userpage',
     })
   },
   //向服务器发送指定信息，返回处理后数据
   getMapInfo: function(info, init=false){
     //需具体填充向服务器请求更改数据-----------------------------------------------------需补充向服务器获取数据代码，结合wx.getStorageSync(key)读取缓存区中session_id
-    var circles = [{
-        "id": 0,
-        "latitude": 39.08371,
-        "longitude": 121.813359,
-        "color": '#CCF2FF',
-        "fillColor": '#00ff7230',
-        "radius": 50
-    }]
-    var markers = [{
-      'id': 0,
-      'iconPath': "/image/setpoint_green.png",
-      'longitude': 121.813359,
-      'latitude': 39.08371,
-      'callout': {
-        'content': '我是这个气泡',
-        'bgColor': '#00ff7290'
+    // var circles = [{
+    //     "id": 0,
+    //     "latitude": 39.08371,
+    //     "longitude": 121.813359,
+    //     "color": '#CCF2FF',
+    //     "fillColor": '#00ff7230',
+    //     "radius": 50
+    // }]
+    // var markers = [{
+    //   'id': 0,
+    //   'iconPath': "../../image/setpoint_green.png",
+    //   'longitude': 121.813359,
+    //   'latitude': 39.08371,
+    //   'callout': {
+    //     'content': '我是这个气泡',
+    //     'bgColor': '#00ff7290'
+    //   }
+    // }]
+
+    var circles = [];
+    var markers = [];
+    wx.request({
+      url: 'http://localhost:8080/map',
+      data:{
+        maptype: "update",
+        sessionId: wx.getStorageSync('sessionId'),
+        latitude: this.data.map.userInfo.latitude,
+        longitude: this.data.map.userInfo.longitude
+
+      },
+      success(res){
+        circles = res.data.circles;
+        markers = res.data.markers;
       }
-    }]
+    })
     return {'circles': circles, 'markers': markers} 
   },
   printMap: function(mapInfo){

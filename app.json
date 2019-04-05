@@ -20,5 +20,6 @@
     "request": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "navigateToMiniProgramAppIdList":["wx18a2ac992306a5a4"]
 }

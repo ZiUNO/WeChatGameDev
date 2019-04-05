@@ -74,6 +74,13 @@ Page({
       content: '←左侧按钮：用户界面\r\n↓中间按钮：攻击当前所在圈\r\n右侧按钮：定位',
       showCancel: false,
     })
+  },
+  admire(){
+    console.log('admire')
+    wx.navigateToMiniProgram({
+      appId: 'wx18a2ac992306a5a4',
+      path: 'pages/apps/largess/detail?id=pc6tu0GXPFo%3D',
+    })
   }
 }
 )

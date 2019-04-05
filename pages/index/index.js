@@ -20,8 +20,6 @@ Page({
     userBorder: "rgba(255, 255, 255, 0.8)",
     logo: undefined,
     location: undefined,
-    animation: null,
-    animationColor: null,
   },
   //事件处理函数
   //页面加载中获取初始化坐标
@@ -34,7 +32,6 @@ Page({
         userBorder: "rgba(0, 255, 200, 0.8)",
         logo: '../../image/logo_green.png',
         location: '../../image/location_green.png',
-        animationColor: 'rgb(0, 255, 200)'
       })
     }
     else if (userChoice == 'blue'){
@@ -42,7 +39,6 @@ Page({
         userBorder: "rgba(0, 200, 255, 0.8)",
         logo: '../../image/logo_blue.png',
         location: '../../image/location_blue.png',
-        animationColor: 'rgb(0, 200, 255)'
       })
     }
     //获取用户位置
@@ -72,6 +68,15 @@ Page({
       'latitude': this.data.map.userInfo.latitude
     }, true)
     this.printMap(mapInfo)
+    //显示提示教程
+    if (wx.getStorageSync('firstTime')){
+      wx.showModal({
+        title: '使用提示',
+        content: '←左侧按钮：用户界面\r\n↓中间按钮：攻击当前所在圈\r\n（一小时限一次）\r\n→右侧按钮：回到当前位置',
+        showCancel: false,
+      })
+      wx.setStorageSync('firstTime', false)
+    }
   },
   //右侧按钮，视野返回到当前位置并更改经纬度数据值
   moveToLocation: function(){
@@ -218,7 +223,4 @@ Page({
     }
     // console.log(this.data.map.circles, this.data.map.markers)
   },
-  showTeachAnimation(){
-    console.log('showTeachAnimation')
-  }
 })

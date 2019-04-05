@@ -67,6 +67,13 @@ Page({
       content: '团队名称：\r\n豆浆油条\r\n团队成员：\r\nZiUNO+Charon+小明同学+白\r\n联系邮箱：\r\nUKG@126.com',
       showCancel: false
     })
+  },
+  showUsage(){
+    wx.showModal({
+      title: '使用提示',
+      content: '←左侧按钮：用户界面\r\n↓中间按钮：攻击当前所在圈\r\n右侧按钮：定位',
+      showCancel: false,
+    })
   }
 }
 )

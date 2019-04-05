@@ -28,15 +28,7 @@ Page({
   //页面加载中获取初始化坐标
   onLoad: function(){
 
-    wx.request({
-      url: 'http://localhost:8080/map',
-      data:{
-        maptype:'init'
-      },
-      success(res){
-        //===================================此处需要根据API初始化地图==！！！！！！！！！！！！！！！！！============
-      }
-    })
+    
     var that = this
     //设置头像框边缘颜色
     var userChoice = wx.getStorageSync('userChoice')
@@ -145,13 +137,14 @@ Page({
 
     var circles = [];
     var markers = [];
+    
     wx.request({
       url: 'http://localhost:8080/map',
       data:{
-        maptype: "update",
+        isinit: init,
         sessionId: wx.getStorageSync('sessionId'),
-        latitude: this.data.map.userInfo.latitude,
-        longitude: this.data.map.userInfo.longitude
+        latitude: info.latitude,
+        longitude: info.longitude
 
       },
       success(res){

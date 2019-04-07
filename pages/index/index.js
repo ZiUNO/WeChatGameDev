@@ -63,11 +63,7 @@ Page({
   onReady: function(e){
     this.mapCtx = wx.createMapContext('usermap')
     this.moveToLocation()
-    var mapInfo = this.getMapInfo({
-      'longitude': this.data.map.userInfo.longitude,
-      'latitude': this.data.map.userInfo.latitude
-    }, true)
-    this.printMap(mapInfo)
+    //当移动到当前位置时因为视野发生变化自动调用regionChange函数刷新当前地图
     //显示提示教程
     if (wx.getStorageSync('firstTime')){
       wx.showModal({
@@ -99,7 +95,18 @@ Page({
     var mapInfo = this.getMapInfo({
       'longitude': this.data.map.userInfo.longitude, 
       'latitude': this.data.map.userInfo.latitude})
-    this.printMap(mapInfo)
+    if (!this.printMap(mapInfo)){
+      wx.showToast({
+        title: 'BEAT SUCCESS!',
+      })
+    }
+    else {
+      wx.showModal({
+        title: 'BEAT FAILED',
+        content: '您未在范围内或未满点击周期',
+        showCancel: false,
+      })
+    }
   }, 
   //跳转到用户信息界面
   toUserPage: function(){
@@ -145,6 +152,7 @@ Page({
     }) 
     return {'circles': circles, 'markers': markers} 
   },
+  //设置图中markers和circles数据
   printMap: function(mapInfo){
     var that = this
     var circles = mapInfo['circles']
@@ -222,5 +230,20 @@ Page({
       })
     }
     // console.log(this.data.map.circles, this.data.map.markers)
+    return !(circles.length == 0)
   },
+  //当视野变化的时候动态的请求新视野下的markers和circles信息
+  regionChange: function () {
+    console.log('region change')
+    var that = this
+    this.mapCtx.getCenterLocation({
+      success: function (res) {
+        var mapInfo = that.getMapInfo({
+          'longitude': res.longitude,
+          'latitude': res.latitude
+        }, true)
+        that.printMap(mapInfo)
+      }
+    })
+  }
 })

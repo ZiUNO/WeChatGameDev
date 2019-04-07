@@ -8,6 +8,7 @@
     markers="{{map.markers}}"  
     bindmarkertap="markertap"
     circles="{{map.circles}}"
+    bindregionchange="regionChange"
     show-location>
     <cover-view class="buttons">
       <cover-view id="userpage" bindtap="toUserPage" style='border: 5px solid {{userBorder}}'>

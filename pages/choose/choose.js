@@ -85,6 +85,10 @@ Page({
     })
     wx.request({
       url: 'http://localhost:8080/choose',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
       data: {
         sessionId: wx.getStorageSync('sessionId'),
         userChoice: this.data.choice

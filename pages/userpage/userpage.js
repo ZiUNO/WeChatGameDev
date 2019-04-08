@@ -18,6 +18,10 @@ Page({
           })
           wx.request({
             url: 'http://localhost:8080/logout',
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
             data: {
               sessionId: wx.getStorageSync('sessionId'),
               destroy: 'destroy'

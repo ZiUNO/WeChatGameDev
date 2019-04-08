@@ -16,6 +16,10 @@ Page({
           if (res.code) {
             wx.request({
               url: 'http://localhost:8080/login',
+              method: 'POST',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded'
+              },
               data: {
                 code: res.code
               },

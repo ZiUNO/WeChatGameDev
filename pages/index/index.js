@@ -138,6 +138,10 @@ Page({
     var markers = [];
     wx.request({
       url: 'http://localhost:8080/map',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
       data: {
         init: init,
         sessionId: wx.getStorageSync('sessionId'),

@@ -9,14 +9,17 @@ Page({
       userInfo: {
         longitude: 0,
         latitude: 0,
-        avatarUrl: null
+        avatarUrl: null,
+        //用户视野范围
+        field:{
+          southwest: null,
+          northeast: null,
+        }
       },
       //地图内容信息
       subkey: '5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF',
       markers: [],
       circles: [],
-      sourthweat: null,
-      northeast: null,
     },
     //用户头像边框颜色
     userBorder: "rgba(255, 255, 255, 0.8)",
@@ -44,18 +47,7 @@ Page({
       })
     }
     //获取用户位置
-    wx.getLocation({
-      type: "gcj02",
-      altitude: true,
-      success: function(res) {
-        var longitude = res.longitude
-        var latitude = res.latitude
-        that.setData({
-          'map.userInfo.latitude': latitude,
-          'map.userInfo.longitude': longitude
-        })
-      },
-    })
+    this.getLocation()
     //设置头像图片url
     that.setData({
       'map.userInfo.avatarUrl': app.globalData.userInfo.avatarUrl
@@ -76,7 +68,7 @@ Page({
       wx.setStorageSync('firstTime', false)
     }
   },
-  //右侧按钮，视野返回到当前位置并更改经纬度数据值
+  //右侧按钮，视野返回到当前位置
   moveToLocation: function(){
     var that = this
     console.log('move to present location')
@@ -93,10 +85,13 @@ Page({
   //中间按键beat功能
   beat: function(){
     console.log('BEAT!')
-    this.moveToLocation()
+    var field = this.getRegion()
+    var location = this.getLocation()
     var mapInfo = this.getMapInfo({
-      'longitude': this.data.map.userInfo.longitude, 
-      'latitude': this.data.map.userInfo.latitude})
+      'longitude': location.longitude, 
+      'latitude': location.latitude,
+      'northeast': field.northeast,
+      'southwest': field.southwest})
     if (!this.printMap(mapInfo)){
       wx.showToast({
         title: 'BEAT SUCCESS!',
@@ -116,35 +111,9 @@ Page({
       url: '../userpage/userpage',
     })
   },
+
   //向服务器发送指定信息，返回处理后数据
   getMapInfo: function(info, init=false){
-    var that = this
-    this.mapCtx.getRegion({
-      success: function(res){
-        that.setData({
-          'map.southwest': res.sourthweat,
-          'map.northeast': res.northeast,
-        })
-      }
-    })
-    // var circles = [{
-    //     "id": 0,
-    //     "latitude": 39.08371,
-    //     "longitude": 121.813359,
-    //     "color": '#CCF2FF',
-    //     "fillColor": '#00ff7230',
-    //     "radius": 50
-    // }]
-    // var markers = [{
-    //   'id': 0,
-    //   'iconPath': "../../image/setpoint_green.png",
-    //   'longitude': 121.813359,
-    //   'latitude': 39.08371,
-    //   'callout': {
-    //     'content': '我是这个气泡',
-    //     'bgColor': '#00ff7290'
-    //   }
-    // }]
     var circles = []
     var markers = []
     wx.request({
@@ -158,8 +127,8 @@ Page({
         sessionId: wx.getStorageSync('sessionId'),
         latitude: info.latitude,
         longitude: info.longitude,
-        sourthweat: this.data.map.sourthweat,
-        northeast: this.data.map.northeast,
+        southwest: info.southwest,
+        northeast: info.northeast,
       },
       success(res) {
         circles = res.data.circles;
@@ -252,14 +221,53 @@ Page({
   regionChange: function () {
     console.log('region change')
     var that = this
+    var field = this.getRegion()
     this.mapCtx.getCenterLocation({
       success: function (res) {
         var mapInfo = that.getMapInfo({
           'longitude': res.longitude,
-          'latitude': res.latitude
+          'latitude': res.latitude,
+          'southwest': field.southwest,
+          'northeast': field.northeast,
         }, true)
         that.printMap(mapInfo)
       }
     })
+  },
+  //获取当前视野范围
+  getRegion(){
+    var that = this
+    var region = {}
+    this.mapCtx.getRegion({
+      success: function (res) {
+        region.northeast = res.northeast
+        region.southwest = res.southwest
+        that.setData({
+          'map.userInfo.field.southwest': region.southwest,
+          'map.userInfo.field.northeast': region.northeast,
+        })
+      }
+    })
+    console.log('region: ', region)
+    return region
+  },
+  //获取当前位置
+  getLocation(){
+    var that = this
+    var location = {}
+    wx.getLocation({
+      type: 'gcj02',
+      altitude: true,
+      success: function(res) {
+        location.latitude = res.latitude
+        location.longitude = res.longitude
+        that.setData({
+          'map.userInfo.latitude': location.latitude,
+          'map.userInfo.longitude': location.longitude,
+        })
+      },
+    })
+    console.log('location: ', location)
+    return location
   }
 })

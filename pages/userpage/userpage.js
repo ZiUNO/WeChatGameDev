@@ -68,7 +68,7 @@ Page({
   getApeInfo: function(){
     wx.showModal({
       title: '关于我们',
-      content: '团队名称：\r\n豆浆油条\r\n团队成员：\r\nZiUNO+Charon+小明同学+白\r\n联系邮箱：\r\nUKG@126.com',
+      content: '团队名称：\r\n豆浆油条\r\n团队成员：\r\nZiUNO+Charon+小明同学+白',
       showCancel: false
     })
   },

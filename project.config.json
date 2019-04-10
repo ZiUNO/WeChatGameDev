@@ -8,7 +8,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.6.6",
+	"libVersion": "2.6.5",
 	"appid": "wx98915a1bd99514eb",
 	"projectname": "WeChatGameDev",
 	"condition": {

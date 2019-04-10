@@ -14,7 +14,9 @@ Page({
       //地图内容信息
       subkey: '5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF',
       markers: [],
-      circles: []
+      circles: [],
+      sourthweat: null,
+      northeast: null,
     },
     //用户头像边框颜色
     userBorder: "rgba(255, 255, 255, 0.8)",
@@ -116,6 +118,15 @@ Page({
   },
   //向服务器发送指定信息，返回处理后数据
   getMapInfo: function(info, init=false){
+    var that = this
+    this.mapCtx.getRegion({
+      success: function(res){
+        that.setData({
+          'map.southwest': res.sourthweat,
+          'map.northeast': res.northeast,
+        })
+      }
+    })
     // var circles = [{
     //     "id": 0,
     //     "latitude": 39.08371,
@@ -134,8 +145,8 @@ Page({
     //     'bgColor': '#00ff7290'
     //   }
     // }]
-    var circles = [];
-    var markers = [];
+    var circles = []
+    var markers = []
     wx.request({
       url: 'http://localhost:8080/map',
       method: 'POST',
@@ -146,8 +157,9 @@ Page({
         init: init,
         sessionId: wx.getStorageSync('sessionId'),
         latitude: info.latitude,
-        longitude: info.longitude
-
+        longitude: info.longitude,
+        sourthweat: this.data.map.sourthweat,
+        northeast: this.data.map.northeast,
       },
       success(res) {
         circles = res.data.circles;

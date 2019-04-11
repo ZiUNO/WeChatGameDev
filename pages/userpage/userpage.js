@@ -31,6 +31,7 @@ Page({
                 wx.showToast({
                   title: '已注销',
                 })
+                wx.clearStorage()
                 wx.reLaunch({
                   url: '../lead/lead',
                 })

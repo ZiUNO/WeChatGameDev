@@ -17,7 +17,8 @@ Page({
             title: '注销中',
           })
           wx.request({
-            url: 'http://localhost:8080/logout',
+            // url: 'http://localhost:8080/logout',
+            url: 'http://10.6.113.10:8080/ssm/logout/',
             method: 'POST',
             header: {
               'content-type': 'application/x-www-form-urlencoded'

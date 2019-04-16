@@ -8,33 +8,44 @@ Page({
     begin_image: '../../image/begin_white.svg'
   },
   onLoad() {
-    wx.setStorageSync('userChoice', 'white')
+    wx.getStorage({
+      key: 'userChoice',
+      fail(){
+        wx.setStorageSync('userChoice', 'white')
+      }
+    })
     //查看是否登陆
-    if (!wx.getStorageSync('session_id')){
-      wx.login({
-        success(res) {
-          if (res.code) {
-            wx.request({
-              url: 'http://localhost:8080/login',
-              method: 'POST',
-              header: {
-                'content-type': 'application/x-www-form-urlencoded'
-              },
-              data: {
-                code: res.code
-              },
-              success(res) {
-                wx.setStorageSync('sessionId', res.data.sessionId)
-                wx.setStorageSync('userChoice', res.data.userChoice)
-              }
-            })
+    wx.getStorage({
+      key: 'sessionId',
+      fail(){
+        wx.login({
+          success(res) {
+            console.log(res.code)
+            if (res.code) {
+              wx.request({
+                // url: 'http://localhost:8080/login',
+                url: 'http://10.6.113.10:8080/ssm/login/',
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                  code: res.code
+                },
+                success(res) {
+                  console.log(res)
+                  wx.setStorageSync('sessionId', res.data.sessionId)
+                  wx.setStorageSync('userChoice', res.data.userChoice)
+                }
+              })
+            }
+            else {
+              console.log('登录失败:' + res.errMsg)
+            }
           }
-          else {
-            console.log('登录失败:' + res.errMsg)
-          }
-        }
-      })
-    }
+        })
+      }
+    })
     // wx.setStorageSync('userChoice', 'blue') //-----------------------------------------------------------------------------修改上面success函数后删掉该强制赋值
     // wx.setStorageSync('userChoice', 'green')
     //设置头像边框

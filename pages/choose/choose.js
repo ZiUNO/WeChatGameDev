@@ -84,7 +84,8 @@ Page({
       'button.submit.loading': true
     })
     wx.request({
-      url: 'http://localhost:8080/choose',
+      // url: 'http://localhost:8080/choose',
+      url: 'http://10.6.113.10:8080/ssm/choose/',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'

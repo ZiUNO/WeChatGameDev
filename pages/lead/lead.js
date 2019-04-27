@@ -8,6 +8,7 @@ Page({
     begin_image: '../../image/begin_white.svg'
   },
   onLoad() {
+    var that = this
     wx.getStorage({
       key: 'userChoice',
       fail(){
@@ -17,6 +18,9 @@ Page({
     //查看是否登陆
     wx.getStorage({
       key: 'sessionId',
+      success(res){
+        that.setColor()
+      },
       fail(){
         wx.login({
           success(res) {
@@ -24,7 +28,7 @@ Page({
             if (res.code) {
               wx.request({
                 // url: 'http://localhost:8080/login',
-                url: 'http://10.6.113.10:8080/ssm/login/',
+                url: 'http://10.6.67.183:8080/ssm/login/',
                 method: 'POST',
                 header: {
                   'content-type': 'application/x-www-form-urlencoded'
@@ -36,6 +40,7 @@ Page({
                   console.log(res)
                   wx.setStorageSync('sessionId', res.data.sessionId)
                   wx.setStorageSync('userChoice', res.data.userChoice)
+                  that.setColor()
                 }
               })
             }
@@ -46,6 +51,8 @@ Page({
         })
       }
     })
+  },
+  setColor(){
     // wx.setStorageSync('userChoice', 'blue') //-----------------------------------------------------------------------------修改上面success函数后删掉该强制赋值
     // wx.setStorageSync('userChoice', 'green')
     //设置头像边框

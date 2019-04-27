@@ -4,6 +4,8 @@ const app = getApp()
 Page({
   data: {
     timestamp: 0,
+    //映射表
+    f:{},
     //地图信息
     map:{
       //地图用户信息
@@ -30,6 +32,7 @@ Page({
   //事件处理函数
   //页面加载中获取初始化坐标
   onLoad: function(){
+    console.log('on loading')
     var that = this
     //设置头像图片url
     that.setData({
@@ -61,11 +64,14 @@ Page({
         })
       },
     })
+    console.log('on load end')
   },
   //页面渲染过程中，获取mapCtx，初始设置
   onReady: function(e){
-    this.mapCtx = wx.createMapContext('usermap')
-    this.moveToLocation()
+    console.log('on ready begin')
+    var that = this
+    that.mapCtx = wx.createMapContext('usermap')
+    that.moveToLocation()
     //当移动到当前位置时因为视野发生变化自动调用regionChange函数刷新当前地图
     //显示提示教程
     if (wx.getStorageSync('firstTime')){
@@ -76,13 +82,14 @@ Page({
       })
       wx.setStorageSync('firstTime', false)
     }
+    console.log('on ready end')
   },
   //右侧按钮，视野返回到当前位置
   moveToLocation: function(){
     var that = this
     console.log('move to present location')
-    this.mapCtx.moveToLocation()
-    this.mapCtx.getCenterLocation({
+    that.mapCtx.moveToLocation()
+    that.mapCtx.getCenterLocation({
       success: function (res) {
         that.setData({
           'map.userInfo.longitude': res.longitude,
@@ -90,33 +97,22 @@ Page({
         })
       }
     })
+    console.log('move end')
   },
   //中间按键beat功能
   beat: function(){
-    console.log('BEAT!')
-    var field = this.getRegion()
-    // this.moveToLocation()
     var that = this
-    var mapInfo = this.getMapInfo({
-      'latitude': that.data.map.userInfo.latitude,
-      'longitude': that.data.map.userInfo.longitude,
-      'northeast': field.northeast,
-      'southwest': field.southwest})
-    if (!mapInfo){
-      wx.showToast({
-        title: 'BEAT SUCCESS!',
-      })
-    }
-    else {
-      wx.showModal({
-        title: 'BEAT FAILED',
-        content: '您未在范围内或未满点击周期',
-        showCancel: false,
-      })
-    }
-  }, 
+    console.log('BEAT!')
+    wx.showLoading({
+      title: 'BEATING...',
+    })
+    that.getRegion(false)
+    // this.moveToLocation()
+    console.log('beat end')
+  },
   //跳转到用户信息界面
   toUserPage: function(){
+    console.log('to user page')
     wx.navigateTo({
       url: '../userpage/userpage',
     })
@@ -124,15 +120,15 @@ Page({
 
   //向服务器发送指定信息，返回处理后数据
   getMapInfo: function(info, init=false){
+    console.log('get map info')
     var circles = []
     var markers = []
     var raw_markers = []
-    var ok = false
     var that = this
     // console.log('info:', info)
     wx.request({
       // url: 'http://localhost:8080/map',
-      url: 'http://10.6.113.10:8080/ssm/map/',
+      url: 'http://10.6.67.183:8080/ssm/map/',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -150,7 +146,7 @@ Page({
       success(res) {
         // console.log(res.data)
         raw_markers = res.data
-        // console.log('raw_markers:', raw_markers)
+        // console.log('raw_markers:', raw_markers)`
         for (let i = 0; i < raw_markers.length; i++) {
           let raw_marker = raw_markers[i]
           let id = raw_marker['id']
@@ -165,7 +161,7 @@ Page({
           marker['id'] = id
           circle['longitude'] = longitude
           marker['longitude'] = longitude
-          circle['latitude'] = 
+          circle['latitude'] =
           marker['latitude'] = latitude
           circle['color'] = color
           circle['fillColor'] = color + '30'
@@ -179,38 +175,56 @@ Page({
           markers[i] = marker
         }
         // console.log({ 'circles': circles, 'markers': markers })
-        ok = that.printMap({ 'circles': circles, 'markers': markers })
+        that.printMap({ 'circles': circles, 'markers': markers },init)
+      },
+      fail(){
+        wx.hideLoading()
+        wx.showModal({
+          title: 'BEAT FAILED',
+          content: '网络连接失败\r\n请检查您的网络连接',
+          showCancel: false,
+        })
       }
     })
-    return ok
+    console.log('get map info end')
   },
   //设置图中markers和circles数据
-  printMap: function(mapInfo){
+  printMap: function(mapInfo, init){
+    console.log('print map')
+    console.log(mapInfo)
     var that = this
     var circles = mapInfo['circles']
     var markers = mapInfo['markers']
     var tmp_info = {}
     var tmp_id = undefined
-    console.log(circles)
+    console.log('print circles')
     for (let i = 0; i < circles.length; i ++){
       let circle = circles[i]
       let id = circle.id
-      tmp_id = 'map.circles[' + id + ']'
-      if (this.data.map.circles[id] == undefined){
+      let fid = 0
+      if (that.data.f[id] == undefined){
+        let tmp_key = 'f[' + id + ']'
+        that.setData({
+          [tmp_key]: Object.keys(that.data.f).length
+        })
+      }
+      fid = that.data.f[id]
+      tmp_id = 'map.circles[' + fid + ']'
+      if (that.data.map.circles[fid] == undefined){
         tmp_info = {
           id: id,
           latitude: 0,
-          longitude: 0, 
-            color: '#123456',
-            fillColor: '#123456',
-            radius: 100,//需修改
+          longitude: 0,
+          color: 0,
+          fillColor: 0,
+          radius: 0,
           }
       }
       else{
-        tmp_info = this.data.map.circles[id]
+        tmp_info = that.data.map.circles[fid]
       }
       for (let j in circle) {
-        if (j == undefined || j == 'radius' || j == 'color' || j == 'fillColor')
+        if (j == undefined)
           continue
         tmp_info[j] = circle[j]
       }
@@ -219,11 +233,20 @@ Page({
       })
     }
     // console.log(this.data.map.circles)
+    console.log('print markers')
     for (let i = 0; i < markers.length; i ++){
       let marker = markers[i]
       let id = marker.id
-      tmp_id = 'map.markers[' + id + ']'
-      if (this.data.map.markers[id] == undefined){
+      let fid = 0
+      if (that.data.f[id] == undefined) {
+        let tmp_key = 'f[' + id + ']'
+        that.setData({
+          [tmp_key]: Object.keys(that.data.f).length
+        })
+      }
+      fid = that.data.f[id]
+      tmp_id = 'map.markers[' + fid + ']'
+      if (that.data.map.markers[fid] == undefined){
         tmp_info = {
           id: id,
           iconPath: 0,
@@ -234,7 +257,7 @@ Page({
           callout: {
             content: 0,
             fontSize: 14,
-            color: '#000000',
+            color: '#000000',//改为白色ffffff
             bgColor: 0,
             padding: 8,
             borderRadius: 15,
@@ -242,7 +265,7 @@ Page({
         }
       }
       else{
-        tmp_info = this.data.map.markers[id]
+        tmp_info = that.data.map.markers[fid]
       }
       for (let j in marker) {
         if (j == undefined)
@@ -262,23 +285,35 @@ Page({
         [tmp_id]: tmp_info
       })
     }
-    // that.setData({
-    //   'map.circles['
-    // })
-    console.log(this.data.map.circles, this.data.map.markers)
-    return !(circles.length == 0)
+    console.log(that.data.map.circles, that.data.map.markers)
+    if (!init){
+      wx.hideLoading()
+      if (circles.length == 0){
+        wx.showToast({
+          title: 'BEAT SUCCESS!',
+        })
+      }
+      else {
+        wx.showModal({
+          title: 'BEAT FAILED',
+          content: '您未在范围内或未满点击周期',
+          showCancel: false,
+        })
+      }
+    }
+    console.log('print map end')
   },
   //当视野变化的时候动态的请求新视野下的markers和circles信息
   regionChange: function () {
     console.log('region change')
     var that = this
-    if (this.data.timestamp == 0) {
+    if (that.data.timestamp == 0) {
       that.setData({
         'timestamp': Date.parse(new Date()) / 1000,
       })
       return
     }
-    if (Date.parse(new Date()) / 1000 - this.data.timestamp < 2){
+    if (Date.parse(new Date()) / 1000 - that.data.timestamp < 2){
       return
     }
     else{
@@ -286,36 +321,44 @@ Page({
         'timestamp': Date.parse(new Date()) / 1000,
       })
     }
-    var field = this.getRegion()
-    this.mapCtx.getCenterLocation({
-      success: function (res) {
-        console.log(res)
-        var mapInfo = that.getMapInfo({
-          'longitude': res.longitude,
-          'latitude': res.latitude,
-          'southwest': field.southwest,
-          'northeast': field.northeast,
-        }, true)
-      }
-    })
+    that.getRegion(true)
+    console.log('region change end')
   },
   //获取当前视野范围
-  getRegion: function(){
-    var that = this
+  getRegion: function(init){
+    console.log('get region')
     var region = {}
-    region['northeast'] = { longitude: this.data.map.userInfo.longitude + 0.01, latitude: this.data.map.userInfo.latitude + 0.01} 
-    region['southwest'] = { longitude: this.data.map.userInfo.longitude - 0.01, latitude: this.data.map.userInfo.latitude - 0.01}
-    // this.mapCtx.getRegion({
-    //   success: function (res) {
-    //     region.northeast = res.northeast
-    //     region.southwest = res.southwest
-    //     that.setData({
-    //       'map.userInfo.field.southwest': region.southwest,
-    //       'map.userInfo.field.northeast': region.northeast,
-    //     })
-    //   }
-    // })
-    console.log('region: ', region)
-    return region
+    var that = this
+    that.mapCtx.getRegion({
+      success: function (res) {
+        region.northeast = res.northeast
+        region.southwest = res.southwest
+        that.setData({
+          'map.userInfo.field.southwest': region.southwest,
+          'map.userInfo.field.northeast': region.northeast,
+        })
+        if (!init){
+          that.getMapInfo({
+            'latitude': that.data.map.userInfo.latitude,
+            'longitude': that.data.map.userInfo.longitude,
+            'northeast': region.northeast,
+            'southwest': region.southwest})
+        }
+        else{
+          that.mapCtx.getCenterLocation({
+            success: function (res) {
+              console.log(res)
+              that.getMapInfo({
+                'longitude': res.longitude,
+                'latitude': res.latitude,
+                'southwest': region.southwest,
+                'northeast': region.northeast,
+              }, true)
+            }
+          })
+        }
+      }
+    })
+    console.log('get region end')
   },
 })

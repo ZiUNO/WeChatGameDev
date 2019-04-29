@@ -6,6 +6,7 @@ Page({
   //注销用户信息
   destroy: function(){
     //向服务器发送消除该用户信息的请求
+    console.log('destroy begin')
     var make_sure = false
     wx.showModal({
       title: '注销',
@@ -28,7 +29,8 @@ Page({
               destroy: 'destroy'
             },
             success(res) {
-              if (res.data.status == 'SUCCESS') {
+              console.log(res)
+              if (res.data.status == 'success') {
                 wx.showToast({
                   title: '已注销',
                 })
@@ -65,6 +67,7 @@ Page({
         }
       }
     })
+    console.log('destroy end')
   },
   //显示开发者信息
   getApeInfo: function(){

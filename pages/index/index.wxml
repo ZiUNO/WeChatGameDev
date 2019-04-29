@@ -1,23 +1,9 @@
 <!--index.wxml-->
 <view class='view'>
-  <map 
-    id="usermap" 
-    longitude="{{map.userInfo.longitude}}" 
-    latitude="{{map.userInfo.latitude}}" 
-    subkey="{{map.subkey}}"
-    markers="{{map.markers}}"  
-    bindmarkertap="markertap"
-    circles="{{map.circles}}"
-    bindregionchange="regionChange"
-    show-location>
-    <cover-view class="buttons">
-      <cover-view id="userpage" bindtap="toUserPage" style='border: 5px solid {{userBorder}}'>
-        <cover-image src="{{map.userInfo.avatarUrl}}"/>
-      </cover-view>
-      <cover-view class="empty"/>
-      <cover-image id="beat" src="{{logo}}" bindtap="beat"/>
-      <cover-view class="empty"/>
-      <cover-image id="location" src="{{location}}" bindtap="moveToLocation"/>
-    </cover-view>
-  </map>
+  <index id='index'
+    avatarUrl="{{avatarUrl}}"
+    userChoice="{{userChoice}}"
+    firstTime="{{firstTime}}"
+    subkey="5QOBZ-A3A3O-BTVWZ-SQQGW-MXASQ-L2FYF"
+  />
 </view>

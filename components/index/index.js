@@ -122,6 +122,7 @@ Component({
       console.log('attached begin')
       var that = this
       that._setLocation()
+      console.log(that.data.subkey)
       console.log('attached end')
     },
     //页面渲染过程中，获取mapCtx，初始设置
@@ -272,6 +273,7 @@ Component({
             marker['iconPath'] = color == '#ffffff' ? '../../image/setpoint_white.png' : color == '#00c8ff' ? '../../image/setpoint_blue.png' : '../../image/setpoint_green.png'
             callout['content'] = '' + content
             callout['bgColor'] = color + '90'
+            callout['color'] = color
             marker['callout'] = callout
             markers[i] = marker
           }

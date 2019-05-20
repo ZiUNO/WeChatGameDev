@@ -16,12 +16,12 @@ Page({
       }
     })
     //查看是否登陆
-    wx.getStorage({
-      key: 'sessionId',
-      success(res){
-        that.setColor()
-      },
-      fail(){
+    // wx.getStorage({
+    //   key: 'sessionId',
+    //   success(res){
+    //     that.setColor()
+    //   },
+    //   fail(){
         wx.login({
           success(res) {
             console.log(res.code)
@@ -49,8 +49,8 @@ Page({
             }
           }
         })
-      }
-    })
+    //   }
+    // })
   },
   setColor(){
     // wx.setStorageSync('userChoice', 'blue') //-----------------------------------------------------------------------------修改上面success函数后删掉该强制赋值
